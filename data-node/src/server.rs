@@ -122,10 +122,8 @@ async fn process(mut stream: TcpStream, logger: Logger) {
     let (tx, rx) = async_channel::unbounded();
 
     loop {
-        monoio::pin! {
-            let read_fut = channel_reader.read_frame();
-            let recv_fut = rx.recv();
-        }
+        let read_fut = channel_reader.read_frame();
+        let recv_fut = rx.recv();
 
         monoio::select! {
             request = read_fut => {
